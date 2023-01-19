@@ -58,8 +58,7 @@ def paraphrase(gender="", age=0, questions_list=[], captions=None, ):
 
 questions_list = [
     'What is color of the hair?',
-    'What is color of the pants?'
-]
+    'What is color of the pants?']
 # path file to test. Change these to inference
 path = '/Users/vikimark/Documents/PythonFlow/EIC_Robocup/26504621-two-couples-of-young-casual-fashion-people-posing-for-the-camera-women-looking-at-their-men.jpg'
 
