@@ -10,14 +10,13 @@ def ask_model(model, image, questions_list):
     """Inference VQA model and return list of answers
 
     Args:
-        model (): model to inference
+        model (BLIP_VQA): model to inference
         image (PIL.Image.Image): An image to be transformed
         questions_list (list of string): list of questions
 
     Returns:
         list of string: list of answers
     """
-
     transformed_image = transform_image(image)
     ans = []
     for question in questions_list:
