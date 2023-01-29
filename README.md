@@ -8,4 +8,10 @@ cd ..
 </pre>
 
 ## Inference
-run image_captioning.py to inference. Please note that "path" variable in image_captioning.py has to be changed.
+<pre>
+python main.py
+</pre>
+Then run following command in new terminal
+<pre>
+python client.py
+</pre>
