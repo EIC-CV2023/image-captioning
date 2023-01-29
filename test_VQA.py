@@ -4,7 +4,6 @@ sys.path.append(os.path.abspath('.'))
 sys.path.append(os.path.abspath('./BLIP'))
 from PIL import Image
 from models.blip_vqa import blip_vqa
-import requests
 import torch
 from torchvision import transforms
 from torchvision.transforms.functional import InterpolationMode
@@ -16,7 +15,7 @@ def load_demo_image(image_size,device):
     raw_image = Image.open(img_path).convert('RGB')   
 
     w,h = raw_image.size
-    display(raw_image.resize((w//5,h//5)))
+    # display(raw_image.resize((w//5,h//5)))
     
     transform = transforms.Compose([
         transforms.Resize((image_size,image_size),interpolation=InterpolationMode.BICUBIC),
