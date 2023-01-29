@@ -2,15 +2,15 @@ import os
 import sys
 sys.path.append(os.path.abspath('.'))
 import cv2
-from custom_socket import CustomSocket
+from src.custom_socket import CustomSocket
 import socket
 import json
 import numpy as np
 import traceback
 from PIL import Image
-from human_crop import crop
-from load_VQA import load_VQA_model
-from image_captioning import ask_model, paraphrase
+from src.human_crop import crop
+from src.load_VQA import load_VQA_model
+from src.image_captioning import ask_model, paraphrase
 
 questions_list = [
     "What is color of the hair?",

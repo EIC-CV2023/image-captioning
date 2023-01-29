@@ -2,7 +2,7 @@ import os
 import sys
 sys.path.append(os.path.abspath('.'))
 import cv2
-from load_VQA import transform_image
+from src.load_VQA import transform_image
 
 def ask_model(model, image, questions_list):
     """Inference VQA model and return list of answers

@@ -1,6 +1,6 @@
 import socket
 import cv2
-from custom_socket import CustomSocket
+from src.custom_socket import CustomSocket
 
 # time_interval = float(10000) # take input every 5 seconds
 
