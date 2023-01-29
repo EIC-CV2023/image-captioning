@@ -8,6 +8,7 @@ cd ..
 </pre>
 
 ## Inference
+run this first
 <pre>
 python main.py
 </pre>
