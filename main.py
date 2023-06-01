@@ -8,7 +8,6 @@ import json
 import numpy as np
 import traceback
 from PIL import Image
-from src.human_crop import crop
 from src.load_VQA import load_VQA_model
 from src.image_captioning import ask_model, paraphrase
 
@@ -42,13 +41,14 @@ while True:
         try:
             data = server.recvMsg(conn)
             img = np.frombuffer(data, dtype=np.uint8).reshape(720, 1280, 3)
-            crop_image = crop(img)
-            if crop_image:
-                whole_image = crop_image['whole']
-                img = cv2.cvtColor(whole_image, cv2.COLOR_BGR2RGB)
+            # crop_image = crop(img) MediaPipe is no longer used, and input was image that has already been cropped.
+            if img.size != 0:
+                # whole_image = crop_image['whole']
+                img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
                 # dummy
                 age, gender = 22, 'male'
+
                 captions = ask_model(model, Image.fromarray(img), questions_list)
                 ans = {"answer":paraphrase(gender, age, questions_list, captions)}
             else:
