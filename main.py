@@ -9,7 +9,7 @@ import numpy as np
 import traceback
 from PIL import Image
 from src.load_VQA import load_VQA_model
-from src.image_captioning import ask_model, paraphrase
+from src.image_captioning import ask_model, paraphrase, get_age_gender
 
 questions_list = [
     "What is color of the hair?",
@@ -17,9 +17,10 @@ questions_list = [
 ]
 
 print("Initializing age and gender model")
-"""
-TBC
-"""
+haar_detector = cv2.CascadeClassifier("age_gender_recog/haarcascade_frontalface_default.xml")
+age_model = cv2.dnn.readNetFromCaffe("age_gender_recog/age.prototxt",
+                                     "age_gender_recog/age_caffe.caffemodel")
+gender_model = cv2.dnn.readNetFromCaffe("age_gender_recog/gender.prototxt", "age_gender_recog/gender_caffe.caffemodel")
 print("Done")
 
 print("Initializing caption model")
@@ -47,7 +48,11 @@ while True:
                 img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
                 # dummy
-                age, gender = 22, 'male'
+                """
+                This space is for improving age & gender to be more precise by giving image to be specific to head section
+                # img = head_crop_image...
+                """
+                age, gender = get_age_gender(img, age_model, gender_model, haar_detector)
 
                 captions = ask_model(model, Image.fromarray(img), questions_list)
                 ans = {"answer":paraphrase(gender, age, questions_list, captions)}

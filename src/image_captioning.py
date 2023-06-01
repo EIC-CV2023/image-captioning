@@ -3,6 +3,7 @@ import sys
 sys.path.append(os.path.abspath('.'))
 import cv2
 from src.load_VQA import transform_image
+import numpy as np
 
 def ask_model(model, image, questions_list):
     """Inference VQA model and return list of answers
@@ -52,3 +53,46 @@ def paraphrase(gender="", age=0, questions_list=[], captions=None, ):
                 text += f"I saw {poss} {question.split()[-1][:-1] is {captions[i]}}"
             
     return text
+
+def get_age_gender(frame, age_model, gender_model, haar_detector):
+    print(f"\nAnalysing age and gender....\n")
+
+    output_indexes = np.array([i for i in range(0, 101)])
+
+    if frame.size != 0:
+        # frame = crop["head"]
+        img = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
+
+        # detect face
+        gray = cv2.cvtColor(frame, cv2.COLOR_RGB2GRAY)
+        faces = np.array(haar_detector.detectMultiScale(gray, 1.3, 5))
+        if faces.size != 0:
+            for face in faces:
+                x, y, w, h = face
+                detected_face = img[int(y):int(y + h), int(x):int(x + w)]
+                break
+            else:
+                print('can not detect face in for')
+                return 0, ""
+
+        else:
+            print('can not detect face in if')
+            return 0, ""
+
+        # age model is a regular vgg and it expects (224, 224, 3) shape input
+
+        detected_face = cv2.resize(detected_face, (224, 224))
+        img_blob = cv2.dnn.blobFromImage(detected_face)  # caffe model expects (1, 3, 224, 224) shape input
+        # ---------------------------
+        age_model.setInput(img_blob)
+        age_dist = age_model.forward()[0]
+        apparent_predictions = round(np.sum(age_dist * output_indexes))
+        # ---------------------------
+        gender_model.setInput(img_blob)
+        gender_class = gender_model.forward()[0]
+        gender = 'Female' if np.argmax(gender_class) == 0 else 'Male'
+
+        return apparent_predictions, gender
+    else:
+        print("Can't detec your face.")
+        return 0, ""
