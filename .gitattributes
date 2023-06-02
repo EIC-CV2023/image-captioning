@@ -1,0 +1,7 @@
+age_gender_recog/age_caffe.caffemodel filter=lfs diff=lfs merge=lfs -text
+age_gender_recog/age_gender_recog.py filter=lfs diff=lfs merge=lfs -text
+age_gender_recog/gender.prototxt filter=lfs diff=lfs merge=lfs -text
+age_gender_recog/gender_caffe.caffemodel filter=lfs diff=lfs merge=lfs -text
+age_gender_recog/haarcascade_frontalface_default.xml filter=lfs diff=lfs merge=lfs -text
+age_gender_recog/age.prototxt filter=lfs diff=lfs merge=lfs -text
+age_gender_recog/* filter=lfs diff=lfs merge=lfs -text
