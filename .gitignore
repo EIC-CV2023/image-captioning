@@ -2,8 +2,5 @@
 /__pycache__
 /BLIP
 age_gender_recog/age_caffe.caffemodel
-age_gender_recog/age_gender_recog.py
-age_gender_recog/age.prototxt
 age_gender_recog/gender_caffe.caffemodel
-age_gender_recog/gender.prototxt
-age_gender_recog/haarcascade_frontalface_default.xml
+
