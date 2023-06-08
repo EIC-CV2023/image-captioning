@@ -23,7 +23,25 @@ def ask_model(model, image, questions_list):
     
     return ans
 
-def paraphrase(gender="", age=0, questions_list=[], captions=None, ):
+def ask_model_with_prompt(model, image, questions_dict):
+    """Inference VQA model and return list of answers
+
+    Args:
+        model (BLIP_VQA): model to inference
+        image (PIL.Image.Image): An image to be transformed
+        questions_list (list of string): list of questions
+
+    Returns:
+        list of string: list of answers
+    """
+    transformed_image = transform_image(image)
+    ans = dict()
+    for prompt in questions_dict:
+        ans[prompt] = model(transformed_image, questions_dict[prompt], train=False, inference='generate')[0]
+    
+    return ans
+
+def paraphrase(answers):
     """Paraphrase answers to make them look more natural
 
     Args:
@@ -40,17 +58,24 @@ def paraphrase(gender="", age=0, questions_list=[], captions=None, ):
     pro = ""
     poss = ""
 
+    age = answers["age"]
+    gender = answers["gender"]
+    race = answers["race"]
+
     if gender:
         gen, pro, poss = ("man", "He", "His") if gender == "male" else ("woman", "She", "Her")
-        text += f"{pro} is a {gen}. {poss} apparent age is {age} years old. "
+        text += f"{pro} is a {gen}. {pro} is {race}. {poss} apparent age is {age} years old. "
 
-    if questions_list:
-        for i, question in enumerate(questions_list):
-            # capt = 'a person posing for a picture'
-            if 'color' in question:
-                text += f"{poss} {question.split()[-1][:-1]} color is {captions[i]}. "
+
+    for k, v in answers.items():
+        # capt = 'a person posing for a picture'
+        if k == "glasses":
+            if v == "yes":
+                text += f"{pro} is wearing glasses. "
             else:
-                text += f"I saw {poss} {question.split()[-1][:-1] is {captions[i]}}"
+                text += f"{pro} is not wearing glasses. "
+        elif k not in ("age", "gender"):
+            text += f"{poss} {k} is {v}. "
             
     return text
 
