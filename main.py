@@ -39,7 +39,7 @@ def main():
     print("Done")
 
     HOST = socket.gethostname()
-    PORT = 10012
+    PORT = 12303
 
     server = CustomSocket(HOST, PORT)
     server.startServer()
