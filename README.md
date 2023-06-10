@@ -1,21 +1,26 @@
-# robocup2023-cv-image-captioning
+# robocup2023-image-captioning
+Image Captioning and Person Describtion for EIC RoboCup@Home 2023.
 Prior to using image captioning, BLIP need to be cloned and installed
-<pre>
-git clone https://github.com/salesforce/BLIP.git
-cd BLIP
-pip install -r requirements.txt
-cd ..
-</pre>
 
-## Inference
-run this first
-<pre>
-python main.py
-</pre>
-Then run following command in new terminal
-<pre>
-python client.py
-</pre>
+## Install
+    [Clone and cd to this repo]
+    conda create -n image-captioning python=3.9.16
+    conda activate image-captioning
+    pip install -r requirements.txt
 
-get age and gender caffemodel from https://drive.google.com/file/d/1RcEI4lk6FesPCBwHi5xAY_svZ8It7XtF/view?usp=sharing
-download and extract age_caffe.caffemodel and gender_caffe.caffemodel to age_gender_recog folder
+    [Cloning BLIP]
+    git clone https://github.com/salesforce/BLIP.git
+    cd BLIP
+    pip install -r requirements.txt
+    cd ..
+
+Get age and gender caffemodel from https://drive.google.com/file/d/1RcEI4lk6FesPCBwHi5xAY_svZ8It7XtF/view?usp=sharing
+
+Download and extract age_caffe.caffemodel and gender_caffe.caffemodel to age_gender_recog folder
+
+## Run
+### Server
+    conda activate image-captioning
+    python3 main.py
+### Live Client
+    python3 client.py
