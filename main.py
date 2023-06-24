@@ -82,6 +82,14 @@ def main():
                     res["answer"] = ""
 
                 server.sendMsg(conn, json.dumps(res))
+                
+                #TODO send an image to WalkieUI
+                # # Display the image
+                # cv2.imshow('Image', img)
+                # cv2.waitKey(6000)  # waits for 6000 ms (6 seconds)
+
+                # # It's a good practice to destroy windows after you are done
+                # cv2.destroyAllWindows()
 
             except Exception as e:
                 traceback.print_exc()
