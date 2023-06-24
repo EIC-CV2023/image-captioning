@@ -2,7 +2,7 @@ import os
 import sys
 sys.path.append(os.path.abspath('.'))
 import cv2
-from src.custom_socket import CustomSocket
+from custom_socket import CustomSocket
 import socket
 import json
 import numpy as np
