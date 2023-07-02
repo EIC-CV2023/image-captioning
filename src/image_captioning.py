@@ -74,7 +74,7 @@ def paraphrase(answers):
                 text += f"{pro} is wearing glasses. "
             else:
                 text += f"{pro} is not wearing glasses. "
-        elif k not in ("age", "gender"):
+        elif k not in ("age", "gender", "race"):
             text += f"{poss} {k} is {v}. "
             
     return text

@@ -1,6 +1,6 @@
 import os
 import sys
-sys.path.append(os.path.abspath('.'))
+# sys.path.append(os.path.abspath('.'))
 import cv2
 from custom_socket import CustomSocket
 import socket
@@ -51,29 +51,27 @@ def main():
 
         while True:
             try:
-                data = server.recvMsg(conn, has_splitter=True)
-
-                frame_height, frame_width = int(data[0]), int(data[1])
-                # print(frame_height, frame_width)
+                data = server.recvMsg(
+                    conn, has_splitter=True)
+                frame_height, frame_width, frame = data
                 
-                img = np.frombuffer(data[-1], dtype=np.uint8).reshape(frame_height, frame_width, 3)
-                # crop_image = crop(img) MediaPipe is no longer used, and input was image that has already been cropped.
+                # crop_image = crop(frame) MediaPipe is no longer used, and input was image that has already been cropped.
 
                 res = dict()
-                if img.size != 0:
+                if frame.size != 0:
                     # whole_image = crop_image['whole']
-                    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+                    frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
                     # dummy
                     """
                     This space is for improving age & gender to be more precise by giving image to be specific to head section
-                    # img = head_crop_image...
+                    # frame = head_crop_image...
                     """
-                    # age, gender = get_age_gender(img, age_model, gender_model, haar_detector)
+                    # age, gender = get_age_gender(frame, age_model, gender_model, haar_detector)
                     # ans["age"] = age
                     # ans["gender"] = gender
 
-                    answers = ask_model_with_prompt(model, Image.fromarray(img), questions_dict)
+                    answers = ask_model_with_prompt(model, Image.fromarray(frame), questions_dict)
                     
                     res = answers
                     
@@ -85,7 +83,7 @@ def main():
                 
                 #TODO send an image to WalkieUI
                 # # Display the image
-                # cv2.imshow('Image', img)
+                # cv2.imshow('Image', frame)
                 # cv2.waitKey(6000)  # waits for 6000 ms (6 seconds)
 
                 # # It's a good practice to destroy windows after you are done
