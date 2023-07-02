@@ -50,14 +50,17 @@ def main():
         print("Client connected from", addr)
 
         while True:
+            res = dict()
+            msg = {"res": res}
             try:
                 data = server.recvMsg(
                     conn, has_splitter=True)
                 frame_height, frame_width, frame = data
+
+                msg["camera_info"] = [frame_width, frame_height]
                 
                 # crop_image = crop(frame) MediaPipe is no longer used, and input was image that has already been cropped.
 
-                res = dict()
                 if frame.size != 0:
                     # whole_image = crop_image['whole']
                     frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -73,13 +76,12 @@ def main():
 
                     answers = ask_model_with_prompt(model, Image.fromarray(frame), questions_dict)
                     
-                    res = answers
+                    res_ic = answers
                     
-                    res["answer"] = paraphrase(answers)
-                else:
-                    res["answer"] = ""
+                    res_ic["answer"] = paraphrase(answers)
+                    msg["res"] = res_ic
 
-                server.sendMsg(conn, json.dumps(res))
+                server.sendMsg(conn, json.dumps(msg))
                 
                 #TODO send an image to WalkieUI
                 # # Display the image
