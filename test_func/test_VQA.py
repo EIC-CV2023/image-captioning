@@ -1,7 +1,7 @@
 import os
 import sys
 sys.path.append(os.path.abspath('.'))
-sys.path.append(os.path.abspath('./BLIP'))
+sys.path.append(os.path.abspath('./BLIP_Mod'))
 from PIL import Image
 from models.blip_vqa import blip_vqa
 import torch
