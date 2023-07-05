@@ -183,8 +183,11 @@ def blip_feature_extractor(pretrained='',**kwargs):
         assert(len(msg.missing_keys)==0)
     return model        
 
-def init_tokenizer():
-    tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
+def init_tokenizer(local_path=''):
+    if local_path == '':
+        tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
+    else:
+        tokenizer = BertTokenizer.from_pretrained(local_path)
     tokenizer.add_special_tokens({'bos_token':'[DEC]'})
     tokenizer.add_special_tokens({'additional_special_tokens':['[ENC]']})       
     tokenizer.enc_token_id = tokenizer.additional_special_tokens_ids[0]  
@@ -214,6 +217,7 @@ def is_url(url_or_filename):
 
 def load_checkpoint(model,url_or_filename):
     if is_url(url_or_filename):
+        print("Checkpoint is URL")
         cached_file = download_cached_file(url_or_filename, check_hash=False, progress=True)
         checkpoint = torch.load(cached_file, map_location='cpu') 
     elif os.path.isfile(url_or_filename):        

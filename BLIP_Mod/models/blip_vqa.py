@@ -13,7 +13,8 @@ class BLIP_VQA(nn.Module):
                  image_size = 480,
                  vit = 'base',
                  vit_grad_ckpt = False,
-                 vit_ckpt_layer = 0,                   
+                 vit_ckpt_layer = 0, 
+                 local_bert = ""                  
                  ):
         """
         Args:
@@ -22,14 +23,12 @@ class BLIP_VQA(nn.Module):
             vit (str): model size of vision transformer
         """               
         super().__init__()
-        
         self.visual_encoder, vision_width = create_vit(vit, image_size, vit_grad_ckpt, vit_ckpt_layer, drop_path_rate=0.1)
-        self.tokenizer = init_tokenizer()  
+        self.tokenizer = init_tokenizer(local_path=local_bert)  
         
         encoder_config = BertConfig.from_json_file(med_config)
         encoder_config.encoder_width = vision_width
         self.text_encoder = BertModel(config=encoder_config, add_pooling_layer=False) 
-        
         decoder_config = BertConfig.from_json_file(med_config)        
         self.text_decoder = BertLMHeadModel(config=decoder_config)          
 
@@ -168,8 +167,11 @@ class BLIP_VQA(nn.Module):
     
     
 def blip_vqa(pretrained='',**kwargs):
+    # print("INITING VQA")
     model = BLIP_VQA(**kwargs)
+    # print("DONE")
     if pretrained:
+        print("LOADING CHECKPOINT")
         model,msg = load_checkpoint(model,pretrained)
 #         assert(len(msg.missing_keys)==0)
     return model  

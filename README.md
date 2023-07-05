@@ -14,6 +14,8 @@ Prior to using image captioning, BLIP need to be cloned and installed
     pip install -r requirements.txt
     cd ..
 
+Download vqa model from https://storage.googleapis.com/sfr-vision-language-research/BLIP/models/model_base_vqa_capfilt_large.pth and put it in BLIP_MOD/weight
+
 Get age and gender caffemodel from https://drive.google.com/file/d/1RcEI4lk6FesPCBwHi5xAY_svZ8It7XtF/view?usp=sharing
 
 Download and extract age_caffe.caffemodel and gender_caffe.caffemodel to age_gender_recog folder
