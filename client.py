@@ -50,7 +50,13 @@ while cap.isOpened():
     if key == ord("q"):
         cap.release()
     if key == ord("c"):
-        msg = c.req(frame)
+        cmd = int(input("1 for caption, 2 for ask: "))
+        if cmd == 1:
+            msg = c.req_with_command(frame, command={"task":"CAPTION"})
+        if cmd == 2:
+            questions = input("Input questions : ".split(","))
+            msg = c.req_with_command(frame, command={"task":"ASK", "questions":questions})
+
         print(msg)
         cv2.waitKey()
 

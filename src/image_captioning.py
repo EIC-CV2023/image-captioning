@@ -41,6 +41,24 @@ def ask_model_with_prompt(model, image, questions_dict):
     
     return ans
 
+def ask_model_with_questions(model, image, questions_list):
+    """Inference VQA model and return list of answers
+
+    Args:
+        model (BLIP_VQA): model to inference
+        image (PIL.Image.Image): An image to be transformed
+        questions_list (list of string): list of questions
+
+    Returns:
+        list of string: list of answers
+    """
+    transformed_image = transform_image(image)
+    ans = dict()
+    for question in questions_list:
+        ans[question] = model(transformed_image, question, train=False, inference='generate')[0]
+    
+    return ans
+
 def paraphrase(answers):
     """Paraphrase answers to make them look more natural
 

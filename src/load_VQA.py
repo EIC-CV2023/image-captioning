@@ -19,7 +19,6 @@ def load_VQA_model(image_size=480):
 
     model_path = "BLIP_Mod/weight/model_base_vqa_capfilt_large.pth"
     bert_path = "BLIP_Mod/bert-base-uncased"
-    # bert_path = ""
     # model_url = 'https://storage.googleapis.com/sfr-vision-language-research/BLIP/models/model_base_vqa_capfilt_large.pth'
     model = blip_vqa(pretrained=model_path, image_size=image_size, vit='base', local_bert=bert_path)
     model.eval()

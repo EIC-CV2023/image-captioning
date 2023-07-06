@@ -9,7 +9,7 @@ import numpy as np
 import traceback
 from PIL import Image
 from src.load_VQA import load_VQA_model
-from src.image_captioning import ask_model, paraphrase, get_age_gender, ask_model_with_prompt
+from src.image_captioning import ask_model, paraphrase, get_age_gender, ask_model_with_prompt, ask_model_with_questions
 
 # questions_list = [
 #     "What is color of the hair?",
@@ -54,32 +54,31 @@ def main():
             msg = {"res": res}
             try:
                 data = server.recvMsg(
-                    conn, has_splitter=True)
-                frame_height, frame_width, frame = data
+                    conn, has_splitter=True, has_command=True)
+                frame_height, frame_width, frame, command = data
 
                 msg["camera_info"] = [frame_width, frame_height]
-                
-                # crop_image = crop(frame) MediaPipe is no longer used, and input was image that has already been cropped.
 
                 if frame.size != 0:
-                    # whole_image = crop_image['whole']
+                        # whole_image = crop_image['whole']
                     frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
-                    # dummy
-                    """
-                    This space is for improving age & gender to be more precise by giving image to be specific to head section
-                    # frame = head_crop_image...
-                    """
-                    # age, gender = get_age_gender(frame, age_model, gender_model, haar_detector)
-                    # ans["age"] = age
-                    # ans["gender"] = gender
+                    if command["task"] == "CAPTION":
 
-                    answers = ask_model_with_prompt(model, Image.fromarray(frame), questions_dict)
-                    
-                    res_ic = answers
-                    
-                    res_ic["answer"] = paraphrase(answers)
-                    msg["res"] = res_ic
+                            answers = ask_model_with_prompt(model, Image.fromarray(frame), questions_dict)
+                            
+                            res_ic = answers
+                            
+                            res_ic["answer"] = paraphrase(answers)
+                            msg["res"] = res_ic
+
+                    if command["task"] == "ASK":
+                        questions_list = command.get("questions").split(",")
+                        print(questions_list)
+
+                        answers = ask_model_with_questions(model, Image.fromarray(frame), questions_list)
+                        msg["res"] = answers
+
 
                 server.sendMsg(conn, json.dumps(msg))
                 
