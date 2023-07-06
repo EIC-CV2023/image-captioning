@@ -73,7 +73,7 @@ def main():
                             msg["res"] = res_ic
 
                     if command["task"] == "ASK":
-                        questions_list = command.get("questions").split(",")
+                        questions_list = command.get("questions")
                         print(questions_list)
 
                         answers = ask_model_with_questions(model, Image.fromarray(frame), questions_list)
